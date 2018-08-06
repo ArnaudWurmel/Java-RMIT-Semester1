@@ -4,13 +4,17 @@ package io.wurmel.assignement_1.Model
  * Created by wurmel_a on 19/7/18.
  */
 
-class   Trackable {
+class   Trackable(tokens: List<String>) {
     private var id: Int = -1
     private var name: String = ""
     private var description: String = ""
     private var url: String = ""
     private var category: String = ""
     private var pictureUrl: String? = null
+
+    init {
+
+    }
 
     fun getId(): Int = this.id
 
