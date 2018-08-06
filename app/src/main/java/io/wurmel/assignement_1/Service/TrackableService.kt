@@ -63,12 +63,6 @@ class   TrackableService(context: Context) {
             if (token.isNotEmpty()) {
                 tokens.add(token)
             }
-            var i = 0
-            while (i < tokens.size) {
-                println("Token[" + i.toString() + "] = " + tokens[i])
-                ++i
-            }
-            println(string)
         }
         return null
     }
