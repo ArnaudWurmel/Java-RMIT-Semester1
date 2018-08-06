@@ -27,6 +27,9 @@ class   TrackableService(context: Context) {
                 if (trackable != null) {
                     result.add(trackable)
                 }
+                else {
+                    println("Ignored corrupted Trackable")
+                }
             }
             return result
         }
@@ -62,6 +65,12 @@ class   TrackableService(context: Context) {
             }
             if (token.isNotEmpty()) {
                 tokens.add(token)
+            }
+            if (tokens.size == 5 || tokens.size == 6) {
+                return Trackable(tokens)
+            }
+            else {
+                println("Couldn't parse : " + string)
             }
         }
         return null

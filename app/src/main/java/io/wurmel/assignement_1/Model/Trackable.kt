@@ -13,7 +13,14 @@ class   Trackable(tokens: List<String>) {
     private var pictureUrl: String? = null
 
     init {
-
+        id = tokens[0].toInt()
+        name = tokens[1]
+        description = tokens[2]
+        url = tokens[3]
+        category = tokens[4]
+        if (tokens.size == 6) {
+            pictureUrl = tokens[5]
+        }
     }
 
     fun getId(): Int = this.id
