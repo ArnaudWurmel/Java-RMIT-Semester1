@@ -42,6 +42,33 @@ class   TrackableService(context: Context) {
 
     private fun createATrackableObjectFromString(string: String): Trackable? {
         if (string.isNotEmpty()) {
+            val tokens = arrayListOf<String>()
+            var token = String()
+            var insideQuote = false
+
+            for (char in string) {
+                if (char == '\"') {
+                    insideQuote = !insideQuote;
+                }
+                else {
+                    if (!insideQuote && char == ',') {
+                        tokens.add(token)
+                        token = ""
+                    }
+                    else {
+                        token += char
+                    }
+                }
+            }
+            if (token.isNotEmpty()) {
+                tokens.add(token)
+            }
+            var i = 0
+            while (i < tokens.size) {
+                println("Token[" + i.toString() + "] = " + tokens[i])
+                ++i
+            }
+            println(string)
         }
         return null
     }
