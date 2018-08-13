@@ -1,5 +1,9 @@
 package io.wurmel.assignement_1.Model
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.net.URL
+
 /**
  * Created by wurmel_a on 19/7/18.
  */
@@ -11,6 +15,7 @@ class   Trackable(tokens: List<String>) {
     private var url: String = ""
     private var category: String = ""
     private var pictureUrl: String? = null
+    private var image: Bitmap? = null
 
     init {
         id = tokens[0].toInt()
@@ -57,5 +62,9 @@ class   Trackable(tokens: List<String>) {
 
     fun setPictureUrl(newPictureUrl: String) {
         this.pictureUrl = newPictureUrl
+        val tmpUri = URL(this.pictureUrl)
+        this.image = BitmapFactory.decodeStream(tmpUri.openConnection().getInputStream())
     }
+
+    fun isPictureProvided(): Boolean = this.image != null
 }
