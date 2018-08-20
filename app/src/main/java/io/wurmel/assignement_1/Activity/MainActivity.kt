@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.LinearLayout
 import io.wurmel.assignement_1.Model.CustomAdapter
-import io.wurmel.assignement_1.Model.User
 import io.wurmel.assignement_1.R
 import io.wurmel.assignement_1.Service.TrackableService
 import io.wurmel.assignement_1.Service.TrackingService
@@ -20,8 +19,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        TrackableService.getTrackables(applicationContext)
-        TestTrackingService.test(applicationContext)
+        val LOG_TAG = TrackingService::class.java!!.getName()
+
+        val Trackables = TrackableService.getTrackables(applicationContext)
+        Log.i(LOG_TAG, "List of trackables returned by trackables service :")
+        for (trackable in Trackables){
+            Log.i(LOG_TAG, "${trackable.getName()} ${trackable.getCategory()} ${trackable.getDescription()}")
+        }
+        //TestTrackingService.test(applicationContext)
 
         //getting recyclerview from xml
         val recyclerView = findViewById<RecyclerView>(R.id.RecyclerView) as RecyclerView
@@ -29,18 +34,8 @@ class MainActivity : AppCompatActivity() {
         //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
-
-        //crating an arraylist to store users using the data class user
-        val users = ArrayList<User>()
-
-        //adding some dummy data to the list
-        users.add(User("Belal Khan", "Ranchi Jharkhand"))
-        users.add(User("Ramiz Khan", "Ranchi Jharkhand"))
-        users.add(User("Faiz Khan", "Ranchi Jharkhand"))
-        users.add(User("Yashar Khan", "Ranchi Jharkhand"))
-
         //creating our adapter
-        val adapter = CustomAdapter(users)
+        val adapter = CustomAdapter(Trackables)
 
         //now adding the adapter to recyclerview
         recyclerView.adapter = adapter

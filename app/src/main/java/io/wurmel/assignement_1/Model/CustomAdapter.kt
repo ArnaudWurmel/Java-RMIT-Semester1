@@ -11,7 +11,7 @@ import io.wurmel.assignement_1.R
  * Created by Belal on 6/19/2017.
  */
 
-class CustomAdapter(val userList: ArrayList<User>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(val Trackables: ArrayList<Trackable>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAdapter.ViewHolder {
@@ -21,22 +21,24 @@ class CustomAdapter(val userList: ArrayList<User>) : RecyclerView.Adapter<Custom
 
     //this method is binding the data on the list
     override fun onBindViewHolder(holder: CustomAdapter.ViewHolder, position: Int) {
-        holder.bindItems(userList[position])
+        holder.bindItems(Trackables[position])
     }
 
     //this method is giving the size of the list
     override fun getItemCount(): Int {
-        return userList.size
+        return Trackables.size
     }
 
     //the class is hodling the list view
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindItems(user: User) {
+        fun bindItems(trackable: Trackable) {
             val textViewName = itemView.findViewById<TextView>(R.id.textViewUsername)
-            val textViewAddress  = itemView.findViewById<TextView>(R.id.textViewAddress)
-            textViewName.text = user.name
-            textViewAddress.text = user.address
+            val textViewDescritpion  = itemView.findViewById<TextView>(R.id.textViewDrescription)
+            val textViewCategory = itemView.findViewById<TextView>(R.id.textViewCategory)
+            textViewName.text = trackable.getName()
+            textViewDescritpion.text = trackable.getDescription()
+            textViewCategory.text = trackable.getCategory()
         }
     }
 }
