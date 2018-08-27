@@ -1,10 +1,14 @@
 package io.wurmel.assignement_1.Model
 
+import android.content.Intent
+import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import io.wurmel.assignement_1.Activity.TrackingActivity
 import io.wurmel.assignement_1.R
 
 /**
@@ -39,6 +43,10 @@ class TrackableAdapter(val Trackables: ArrayList<Trackable>) : RecyclerView.Adap
             textViewName.text = trackable.getName()
             textViewDescritpion.text = trackable.getDescription()
             textViewCategory.text = trackable.getCategory()
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, TrackingActivity::class.java)
+                itemView.context.startActivity(intent)
+            }
         }
     }
 }
