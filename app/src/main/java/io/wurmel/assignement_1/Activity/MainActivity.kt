@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.LinearLayout
-import io.wurmel.assignement_1.Model.CustomAdapter
+import io.wurmel.assignement_1.Model.TrackableAdapter
 import io.wurmel.assignement_1.R
 import io.wurmel.assignement_1.Service.TrackableService
 import io.wurmel.assignement_1.Service.TrackingService
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
         //creating our adapter
-        val adapter = CustomAdapter(Trackables)
+        val adapter = TrackableAdapter(Trackables)
 
         //now adding the adapter to recyclerview
         recyclerView.adapter = adapter

@@ -11,16 +11,16 @@ import io.wurmel.assignement_1.R
  * Created by Belal on 6/19/2017.
  */
 
-class CustomAdapter(val Trackables: ArrayList<Trackable>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class TrackableAdapter(val Trackables: ArrayList<Trackable>) : RecyclerView.Adapter<TrackableAdapter.ViewHolder>() {
 
     //this method is returning the view for each item in the list
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackableAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.list_layout, parent, false)
         return ViewHolder(v)
     }
 
     //this method is binding the data on the list
-    override fun onBindViewHolder(holder: CustomAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TrackableAdapter.ViewHolder, position: Int) {
         holder.bindItems(Trackables[position])
     }
 
@@ -29,7 +29,7 @@ class CustomAdapter(val Trackables: ArrayList<Trackable>) : RecyclerView.Adapter
         return Trackables.size
     }
 
-    //the class is hodling the list view
+    //the class is holding the list view
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bindItems(trackable: Trackable) {
