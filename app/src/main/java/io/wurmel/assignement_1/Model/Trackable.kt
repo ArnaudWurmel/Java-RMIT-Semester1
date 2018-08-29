@@ -15,7 +15,6 @@ class   Trackable(tokens: List<String>) {
     private var url: String = ""
     private var category: String = ""
     private var pictureUrl: String? = null
-    private var image: Bitmap? = null
 
     init {
         id = tokens[0].toInt()
@@ -24,7 +23,7 @@ class   Trackable(tokens: List<String>) {
         url = tokens[3]
         category = tokens[4]
         if (tokens.size == 6) {
-            pictureUrl = tokens[5]
+            setPictureUrl(tokens[5])
         }
     }
 
@@ -62,9 +61,7 @@ class   Trackable(tokens: List<String>) {
 
     fun setPictureUrl(newPictureUrl: String) {
         this.pictureUrl = newPictureUrl
-        val tmpUri = URL(this.pictureUrl)
-        this.image = BitmapFactory.decodeStream(tmpUri.openConnection().getInputStream())
     }
 
-    fun isPictureProvided(): Boolean = this.image != null
+    fun isPictureProvided(): Boolean = this.pictureUrl != null
 }
