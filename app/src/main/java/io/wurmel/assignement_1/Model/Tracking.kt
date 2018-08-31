@@ -27,5 +27,19 @@ class Tracking(trackableId: Int, title: String) {
         this.title = title
     }
 
+    fun setTargetStartEndTime(startTime: Date, stopTime: Int) {
+        targetStartTime = startTime
+        targetEndTime = startTime
+        targetEndTime.minutes = targetEndTime.minutes + stopTime
+    }
+
+    fun setMeetTime(date: Date) {
+        meetTime = date
+    }
+
+    fun setMeetLocation(latitude: Double, longitude: Double) {
+        meetLocation = latitude.toString() + "," + longitude.toString()
+    }
+
     fun getId(): String = this.id
 }

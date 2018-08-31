@@ -3,7 +3,7 @@
 3,"Ghost Kitchen","Traditional Taiwanese Food","http://ghostkitchen.com.au/","Asian",https://www.taiwanese-secrets.com/wp-content/uploads/taiwan-food.005.jpg
 4,"Afro Feast","African Street Food","https://www.facebook.com/afrofeast","African",https://www.africa.com/wp-content/uploads/2015/11/Mozambique-prawns.jpg
 5,"Senior BBQ","Charcoal Grill","http://www.argentineanbbq.com/","Argentinian",https://www.telegraph.co.uk/content/dam/news/2016/07/01/2307492_Barbecue_foreign_trans_NvBQzQNjv4Bqzp8nYuJ5y7-MVCwQCg-OYNWS0_VgLOt1tYy2IwySKLA.jpg?imwidth=450
-6,"White Guy Cooks Thai","Thai Cuisine","http://www.whiteguycooksthai.com.au/","Thai",http://static.wixstatic.com/media/6fef0f_af692d273b0a4442b578280380e29d92~mv2.jpg/v1/fill/w_966,h_521,al_c,q_85,usm_0.66_1.00_0.01/6fef0f_af692d273b0a4442b578280380e29d92~mv2.webp
+6,"White Guy Cooks Thai","Thai Cuisine","http://www.whiteguycooksthai.com.au/","Thai","http://static.wixstatic.com/media/6fef0f_af692d273b0a4442b578280380e29d92~mv2.jpg/v1/fill/w_966,h_521,al_c,q_85,usm_0.66_1.00_0.01/6fef0f_af692d273b0a4442b578280380e29d92~mv2.webp"
 7,"Yogurddiction","All natural, non-fat frozen yoghurt","https://www.facebook.com/Yogurddiction","Dessert",https://food.fnr.sndimg.com/content/dam/images/food/fullset/2003/10/16/4/tm1b17_fruit_parfaits1.jpg.rend.hgtvcom.616.462.suffix/1434575166114.jpeg
 8,"BanhMiBoys","Vietnamese Meat/Salad Buns","https://www.facebook.com/BanhMiBoys","Vietnamese",https://farm5.staticflickr.com/4573/38561719246_60354b9d09_o.jpg
 9,"My Two Mums","Ice Cream specialising in Ice Cream Sandwiches","https://www.facebook.com/MyTwoMumsTruck","Dessert",https://i.ytimg.com/vi/qAqqrpNpsuo/maxresdefault.jpg

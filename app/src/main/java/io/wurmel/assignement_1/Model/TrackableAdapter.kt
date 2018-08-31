@@ -58,6 +58,7 @@ class TrackableAdapter(val Trackables: ArrayList<Trackable>) : RecyclerView.Adap
             }
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, AddTrackingActivity::class.java)
+                intent.putExtra("trackableId", trackable.getId())
                 itemView.context.startActivity(intent)
             }
         }

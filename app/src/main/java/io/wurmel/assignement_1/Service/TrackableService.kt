@@ -33,6 +33,19 @@ class   TrackableService(context: Context) {
             }
             return result
         }
+        fun getTrackableFromId(context: Context, id: Int): Trackable? {
+            var result: Trackable? = null
+            var trackables = getTrackables(context)
+
+            for (trackable in trackables) {
+                if (trackable.getId() == id) {
+                    result = trackable
+                    break
+                }
+            }
+            return result
+        }
+
     }
 
     private fun loadResourceFile(): List<String> {

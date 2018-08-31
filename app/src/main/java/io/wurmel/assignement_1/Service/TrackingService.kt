@@ -132,6 +132,18 @@ private constructor() {
         return returnList
     }
 
+    fun getTrackingForTrackable(trackableId: Int): List<TrackingInfo> {
+        val resultList = ArrayList<TrackingInfo>()
+        parseFile(context)
+
+        for (trackingInfo in trackingList) {
+            if (trackingInfo.trackableId == trackableId) {
+                resultList.add(trackingInfo)
+            }
+        }
+        return resultList
+    }
+
     companion object {
         // PRIVATE PORTION
         private val LOG_TAG = TrackingService::class.java.name
