@@ -4,20 +4,17 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Spinner
 import io.wurmel.assignement_1.Model.Trackable
 import io.wurmel.assignement_1.R
 import io.wurmel.assignement_1.Service.TrackableService
-import android.widget.ArrayAdapter
-import android.widget.EditText
 import io.wurmel.assignement_1.Model.Tracking
 import io.wurmel.assignement_1.Service.TrackingService
 import java.text.DateFormat
-import android.widget.TimePicker
 import android.app.TimePickerDialog
 import android.content.DialogInterface
+import android.opengl.Visibility
 import android.support.design.widget.FloatingActionButton
+import android.widget.*
 import kotlinx.android.synthetic.main.add_tracking_activity.*
 import java.util.*
 
@@ -27,12 +24,15 @@ import java.util.*
  */
 class   AddTrackingActivity: AppCompatActivity() {
 
+    private var editTracking: Tracking? = null
     private var trackable: Trackable? = null
     private var trackingInfos = ArrayList<TrackingService.TrackingInfo>()
 
     private var stopSpinner: Spinner? = null
     private var timePickerField: EditText? = null
     private var fabButton: FloatingActionButton? = null
+    lateinit var endDateTextField: TextView
+    lateinit var beginDateTextField: TextView
 
     private var mHour: Int = 0
     private var mMinute: Int = 0
@@ -40,16 +40,45 @@ class   AddTrackingActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_tracking_activity)
-        stopSpinner = findViewById<Spinner>(R.id.trackableStop)
-        timePickerField = findViewById<EditText>(R.id.timePicker)
-        trackable = TrackableService.getTrackableFromId(this, intent.getIntExtra("trackableId", -1))
-        configureSpinner()
-        timePickerField!!.setOnClickListener {
-            displayTimePicker()
+        stopSpinner = findViewById(R.id.trackableStop)
+        timePickerField = findViewById(R.id.timePicker)
+        fabButton = findViewById(R.id.fab)
+        endDateTextField = findViewById(R.id.endDate)
+        beginDateTextField = findViewById(R.id.beginDate)
+        if (intent.getStringExtra("trackingId") != null) {
+            editTracking = TrackableService.getTrackingById(intent.getStringExtra("trackingId"))
         }
-        fabButton = findViewById<FloatingActionButton>(R.id.fab)
-        fabButton!!.setOnClickListener {
-            addNewTracking()
+        if (editTracking != null) {
+            setTitle("Editing tracking")
+            mHour = editTracking!!.getMeetTime().hours
+            mMinute = editTracking!!.getMeetTime().minutes
+            timePickerField!!.setText(mHour.toString() + ":" + mMinute.toString())
+            stopSpinner!!.visibility = View.GONE
+            titleTextField.setText(editTracking!!.getTitle())
+            timePickerField!!.setText(editTracking!!.getMeetTime().hours.toString() + ":" + editTracking!!.getMeetTime().minutes.toString())
+            endDateTextField.visibility = View.VISIBLE
+            beginDateTextField.visibility = View.VISIBLE
+            beginDateTextField.setText("After: " + editTracking!!.getTargetStartDate().toString())
+            endDateTextField.setText("Before: " + editTracking!!.getTargetEndTime().hours.toString() + ":" + editTracking!!.getTargetEndTime().minutes.toString())
+            timePickerField!!.setOnClickListener {
+                displayTimePicker(true)
+            }
+            fabButton!!.setOnClickListener {
+                editTracking()
+            }
+        }
+        else {
+            endDateTextField.visibility = View.GONE
+            beginDateTextField.visibility = View.GONE
+            trackable = TrackableService.getTrackableFromId(this, intent.getIntExtra("trackableId", -1))
+            configureSpinner()
+            timePickerField!!.setOnClickListener {
+                displayTimePicker(false)
+            }
+            fabButton!!.setOnClickListener {
+                addNewTracking()
+            }
+
         }
     }
 
@@ -70,10 +99,12 @@ class   AddTrackingActivity: AppCompatActivity() {
         stopSpinner!!.adapter = arrayAdapter
     }
 
-    private fun displayTimePicker() {
-        val c = Calendar.getInstance()
-        mHour = c.get(Calendar.HOUR_OF_DAY)
-        mMinute = c.get(Calendar.MINUTE)
+    private fun displayTimePicker(editing: Boolean) {
+        if (editing == false) {
+            val c = Calendar.getInstance()
+            mHour = c.get(Calendar.HOUR_OF_DAY)
+            mMinute = c.get(Calendar.MINUTE)
+        }
 
         val timePickerDialog = TimePickerDialog(this,
                 TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
@@ -109,6 +140,25 @@ class   AddTrackingActivity: AppCompatActivity() {
             return
         }
         displayErrorDialog("Date must be between start and end date")
+    }
+
+    private fun editTracking() {
+        if (titleTextField.text.isEmpty()) {
+            displayErrorDialog("You must provide a title")
+            return
+        }
+        editTracking!!.setTitle(titleTextField.text.toString())
+        val meetDate = Date(editTracking!!.getMeetTime().time)
+
+        meetDate.minutes = mMinute
+        meetDate.hours = mHour
+        editTracking!!.setMeetTime(meetDate)
+        if (meetDate >= editTracking!!.getTargetStartDate() && meetDate <= editTracking!!.getTargetEndTime()) {
+            finish()
+            return
+        }
+        displayErrorDialog("Date must be between start and end date")
+
     }
 
     private fun displayErrorDialog(error: String) {

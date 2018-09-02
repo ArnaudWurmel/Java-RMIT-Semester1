@@ -46,4 +46,9 @@ class Tracking(trackableId: Int, title: String) {
     fun getTargetEndTime(): Date = this.targetEndTime
 
     fun getTargetStartDate(): Date = this.targetStartTime
+
+    fun getMeetTime(): Date = this.meetTime
+
+    fun getTargetLocation(): String = this.meetLocation
+
 }

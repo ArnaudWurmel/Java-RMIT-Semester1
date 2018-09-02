@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,44 +11,76 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewUsername"
-                android:layout_width="match_parent"
+                android:id="@+id/title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textAppearance="@android:style/TextAppearance.Material.Large" />
-
-            <TextView
-                android:id="@+id/textViewCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingRight="8dp"
-                android:textAppearance="@android:style/TextAppearance.Material.Body1"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/containerTime"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 />
 
             <TextView
-                android:id="@+id/textViewDrescription"
-                android:layout_width="match_parent"
+                android:id="@+id/position"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="8dp"
-                android:paddingRight="8dp"
-                android:textAppearance="@android:style/TextAppearance.Material.Body2"/>
-        </LinearLayout>
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/containerTime"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                android:textAlignment="viewEnd"
+                android:textSize="15sp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/containerTime"
+                >
+
+                <TextView
+                    android:id="@+id/month_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/timeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="8dp"/>
+
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+
     </android.support.v7.widget.CardView>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

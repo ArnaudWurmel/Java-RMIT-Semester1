@@ -26,8 +26,17 @@ class   TrackableService {
             instance.trackings.add(tracking)
         }
 
-        fun getTrackings(): List<Tracking> {
+        fun getTrackings(): ArrayList<Tracking> {
             return instance.trackings
+        }
+
+        fun getTrackingById(id: String): Tracking? {
+            for (tracking in instance.trackings) {
+                if (tracking.getId() == id) {
+                    return tracking
+                }
+            }
+            return null
         }
 
         fun getTrackables(context: Context): ArrayList<Trackable> {

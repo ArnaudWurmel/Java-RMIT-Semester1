@@ -3,9 +3,13 @@ package io.wurmel.assignement_1.Activity
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
 import io.wurmel.assignement_1.Model.TrackableAdapter
 import io.wurmel.assignement_1.R
@@ -15,20 +19,99 @@ import java.text.DateFormat
 import java.text.ParseException
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.SearchView
+import io.wurmel.assignement_1.Model.Trackable
+import io.wurmel.assignement_1.Model.TrackingAdapter
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
+    private lateinit var menu: BottomNavigationView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var searchBar: SearchView
+    private var displayingTrackable = true
+    private var searchString: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val Trackables = TrackableService.getTrackables(applicationContext)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.RecyclerView) as RecyclerView
+        searchBar = findViewById(R.id.searchBar)
+        recyclerView = findViewById(R.id.displayList)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        val adapter = TrackableAdapter(Trackables)
+        displayTrackings()
+        displayTrackables()
+        menu = findViewById(R.id.navigation)
+        menu.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.tracking_action -> {
+                    displayTrackings()
+                }
+                R.id.trackable_action -> {
+                    displayTrackables()
+                }
+            }
+            return@setOnNavigationItemSelectedListener true
+        }
+        searchBar.setOnQueryTextListener(this)
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        if (p0 != null) {
+            searchString = p0
+        }
+        else {
+            searchString = ""
+        }
+        displayTrackables()
+        return true
+    }
+
+    override fun onQueryTextSubmit(p0: String?): Boolean {
+        return false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (displayingTrackable) {
+            displayTrackables()
+        }
+        else {
+            displayTrackings()
+        }
+    }
+
+    private fun displayTrackables() {
+        searchBar.visibility = View.VISIBLE
+        var trackables = TrackableService.getTrackables(applicationContext)
+        if (searchString.isNotEmpty()) {
+            var tmpTrackagles = ArrayList<Trackable>()
+            for (trackable in trackables) {
+                val categories = trackable.getCategory().split(",")
+                var match = false
+                for (category in categories) {
+                    if (category.startsWith(searchString, true)) {
+                        match = true
+                    }
+                }
+                if (match) {
+                    tmpTrackagles.add(trackable)
+                }
+            }
+            trackables = tmpTrackagles
+        }
+        val adapter = TrackableAdapter(trackables)
         recyclerView.adapter = adapter
+        displayingTrackable = true
+    }
+
+    private fun displayTrackings() {
+        searchBar.visibility = View.GONE
+        val followedsTrackings = TrackableService.getTrackings()
+        val adapter = TrackingAdapter(followedsTrackings)
+
+        recyclerView.adapter = adapter
+        displayingTrackable = false
     }
 
 }

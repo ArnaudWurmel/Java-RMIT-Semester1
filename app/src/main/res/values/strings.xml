@@ -3,4 +3,6 @@
     <string name="trackable_file">food_truck.txt</string>
     <string name="title">Title</string>
     <string name="default_time">-- : --</string>
+    <string name="tracking">Tracking</string>
+    <string name="trackable">Trackable</string>
 </resources>
