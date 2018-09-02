@@ -1,5 +1,6 @@
 package io.wurmel.assignement_1.Activity
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -15,6 +16,7 @@ import io.wurmel.assignement_1.Service.TrackingService
 import java.text.DateFormat
 import android.widget.TimePicker
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.support.design.widget.FloatingActionButton
 import kotlinx.android.synthetic.main.add_tracking_activity.*
 import java.util.*
@@ -23,10 +25,10 @@ import java.util.*
 /**
  * Created by wurmel_a on 29/8/18.
  */
-class   AddTrackingActivity: AppCompatActivity(), View.OnClickListener {
+class   AddTrackingActivity: AppCompatActivity() {
 
     private var trackable: Trackable? = null
-    private var trackingInfos = listOf<TrackingService.TrackingInfo>()
+    private var trackingInfos = ArrayList<TrackingService.TrackingInfo>()
 
     private var stopSpinner: Spinner? = null
     private var timePickerField: EditText? = null
@@ -42,13 +44,17 @@ class   AddTrackingActivity: AppCompatActivity(), View.OnClickListener {
         timePickerField = findViewById<EditText>(R.id.timePicker)
         trackable = TrackableService.getTrackableFromId(this, intent.getIntExtra("trackableId", -1))
         configureSpinner()
-        timePickerField!!.setOnClickListener(this)
+        timePickerField!!.setOnClickListener {
+            displayTimePicker()
+        }
         fabButton = findViewById<FloatingActionButton>(R.id.fab)
-        fabButton!!.setOnClickListener(this)
+        fabButton!!.setOnClickListener {
+            addNewTracking()
+        }
     }
 
     private fun configureSpinner() {
-        this.trackingInfos = TrackingService.getSingletonInstance(this).getTrackingForTrackable(trackable!!.getId())
+        val trackingInfos = TrackingService.getSingletonInstance(this).getTrackingForTrackable(trackable!!.getId())
         val elements = ArrayList<String>()
         elements.add("Select one stopping time")
         for (trackingInfo in trackingInfos) {
@@ -56,6 +62,7 @@ class   AddTrackingActivity: AppCompatActivity(), View.OnClickListener {
                 var element = trackingInfo.stopTime.toString() + "mn " +  trackingInfo.date!!.toLocaleString() + " / "
                 element = element + trackingInfo.latitude.toString() + " " + trackingInfo.longitude.toString()
                 elements.add(element)
+                this.trackingInfos.add(trackingInfo)
             }
         }
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, elements)
@@ -63,33 +70,58 @@ class   AddTrackingActivity: AppCompatActivity(), View.OnClickListener {
         stopSpinner!!.adapter = arrayAdapter
     }
 
-    override fun onClick(p0: View?) {
-        if (p0 == timePickerField) {
-            val c = Calendar.getInstance()
-            mHour = c.get(Calendar.HOUR_OF_DAY)
-            mMinute = c.get(Calendar.MINUTE)
+    private fun displayTimePicker() {
+        val c = Calendar.getInstance()
+        mHour = c.get(Calendar.HOUR_OF_DAY)
+        mMinute = c.get(Calendar.MINUTE)
 
-            val timePickerDialog = TimePickerDialog(this,
-                    TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                        mHour = hourOfDay
-                        mMinute = minute
-                        timePickerField!!.setText(hourOfDay.toString() + ":" + minute)
-                    }, mHour, mMinute, true)
+        val timePickerDialog = TimePickerDialog(this,
+                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    mHour = hourOfDay
+                    mMinute = minute
+                    timePickerField!!.setText(hourOfDay.toString() + ":" + minute)
+                }, mHour, mMinute, true)
 
-            timePickerDialog.show()
+        timePickerDialog.show()
+    }
+
+    private fun addNewTracking() {
+        if (titleTextField.text.isEmpty()) {
+            displayErrorDialog("You must provide a title")
+            return
         }
-        else if (p0 == fab) {
-            val newTracking = Tracking(trackable!!.getId(), titleTextField.text.toString())
-            val idx = stopSpinner!!.selectedItemPosition
-            if (idx == 0) {
-                return
-            }
-            newTracking.setMeetLocation(trackingInfos[idx - 1].latitude, trackingInfos[idx - 1].longitude)
-            newTracking.setTargetStartEndTime(trackingInfos[idx - 1].date!!, trackingInfos[idx - 1].stopTime)
-            val meetDate = trackingInfos[idx - 1].date!!
-            meetDate.minutes = mMinute
-            meetDate.hours = mHour
-            newTracking.setMeetTime(meetDate)
+        val newTracking = Tracking(trackable!!.getId(), titleTextField.text.toString())
+        val idx = stopSpinner!!.selectedItemPosition
+        if (idx == 0) {
+            displayErrorDialog("You must choose a position for the Trackable")
+            return
         }
+        newTracking.setMeetLocation(trackingInfos[idx - 1].latitude, trackingInfos[idx - 1].longitude)
+        newTracking.setTargetStartEndTime(trackingInfos[idx - 1].date!!, trackingInfos[idx - 1].stopTime)
+        val meetDate = Date(trackingInfos[idx - 1].date!!.time)
+
+        meetDate.minutes = mMinute
+        meetDate.hours = mHour
+        newTracking.setMeetTime(meetDate)
+        if (meetDate >= newTracking.getTargetStartDate() && meetDate <= newTracking.getTargetEndTime()) {
+            TrackableService.addTracking(newTracking)
+            finish()
+            return
+        }
+        displayErrorDialog("Date must be between start and end date")
+    }
+
+    private fun displayErrorDialog(error: String) {
+        val dialog: AlertDialog
+
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle("Error")
+        builder.setMessage(error)
+        val dialogClickListener = DialogInterface.OnClickListener{ _, _ ->
+        }
+        builder.setNeutralButton("Ok",dialogClickListener)
+        dialog = builder.create()
+        dialog.show()
     }
 }

@@ -13,33 +13,24 @@ import io.wurmel.assignement_1.Service.TrackableService
 import io.wurmel.assignement_1.Service.TrackingService
 import java.text.DateFormat
 import java.text.ParseException
+import android.widget.ArrayAdapter
+import android.widget.ListView
+
 
 class MainActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val LOG_TAG = TrackingService::class.java!!.getName()
-
         val Trackables = TrackableService.getTrackables(applicationContext)
-        Log.i(LOG_TAG, "List of trackables returned by trackables service :")
-        for (trackable in Trackables){
-            Log.i(LOG_TAG, "${trackable.getName()} ${trackable.getCategory()} ${trackable.getDescription()}")
-        }
-        //TestTrackingService.test(applicationContext)
 
-        //getting recyclerview from xml
         val recyclerView = findViewById<RecyclerView>(R.id.RecyclerView) as RecyclerView
-
-        //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-
-        //creating our adapter
         val adapter = TrackableAdapter(Trackables)
-
-        //now adding the adapter to recyclerview
         recyclerView.adapter = adapter
     }
+
 }
 
 object TestTrackingService {

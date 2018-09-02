@@ -29,8 +29,8 @@ class Tracking(trackableId: Int, title: String) {
 
     fun setTargetStartEndTime(startTime: Date, stopTime: Int) {
         targetStartTime = startTime
-        targetEndTime = startTime
-        targetEndTime.minutes = targetEndTime.minutes + stopTime
+        targetEndTime = Date(startTime.time)
+        targetEndTime.minutes += stopTime
     }
 
     fun setMeetTime(date: Date) {
@@ -42,4 +42,8 @@ class Tracking(trackableId: Int, title: String) {
     }
 
     fun getId(): String = this.id
+
+    fun getTargetEndTime(): Date = this.targetEndTime
+
+    fun getTargetStartDate(): Date = this.targetStartTime
 }

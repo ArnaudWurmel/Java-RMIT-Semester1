@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 
 import io.wurmel.assignement_1.Model.Trackable
+import io.wurmel.assignement_1.Model.Tracking
 import io.wurmel.assignement_1.R
 import java.io.FileReader
 
@@ -12,17 +13,29 @@ import java.io.FileReader
  * Created by wurmel_a on 19/7/18.
  */
 
-class   TrackableService(context: Context) {
+class   TrackableService {
 
-    private var context: Context = context
+    private var context: Context? = null
+    private var trackings = ArrayList<Tracking>()
 
     companion object {
+
+        private var instance = TrackableService()
+
+        fun addTracking(tracking: Tracking) {
+            instance.trackings.add(tracking)
+        }
+
+        fun getTrackings(): List<Tracking> {
+            return instance.trackings
+        }
+
         fun getTrackables(context: Context): ArrayList<Trackable> {
             val result = arrayListOf<Trackable>()
-            val trackableService = TrackableService(context)
-            val dataList = trackableService.loadResourceFile()
+            instance.context = context
+            val dataList = instance.loadResourceFile()
             for (data in dataList) {
-                val trackable: Trackable? = trackableService.createATrackableObjectFromString(data)
+                val trackable: Trackable? = instance.createATrackableObjectFromString(data)
 
                 if (trackable != null) {
                     result.add(trackable)
@@ -49,7 +62,7 @@ class   TrackableService(context: Context) {
     }
 
     private fun loadResourceFile(): List<String> {
-        val fileContent = context.assets.open(context.getString(R.string.trackable_file)).bufferedReader().use {
+        val fileContent = context!!.assets.open(context!!.getString(R.string.trackable_file)).bufferedReader().use {
             it.readText()
         }
 
