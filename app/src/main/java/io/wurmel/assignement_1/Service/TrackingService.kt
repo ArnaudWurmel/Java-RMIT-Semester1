@@ -34,9 +34,19 @@ private constructor() {
         var latitude: Double = 0.toDouble()
         var longitude: Double = 0.toDouble()
 
+        //Properties from gmatrix
+        var distanceText: String = ""
+        var distanceValue: Int = 0
+        var durationText: String = ""
+        var durationValue: Int = 0
+
         override fun toString(): String {
             return String.format(Locale.getDefault(), "Date/Time=%s, trackableId=%d, stopTime=%d, lat=%.5f, long=%.5f", DateFormat.getDateTimeInstance(
                     DateFormat.SHORT, DateFormat.MEDIUM).format(date), trackableId, stopTime, latitude, longitude)
+        }
+
+        fun getLocation(): String {
+            return latitude.toString() + "," + longitude.toString()
         }
     }
 
