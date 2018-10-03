@@ -19,6 +19,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/filterCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -34,16 +35,31 @@
 
                 </SearchView>
 
-                <EditText
-                    android:id="@+id/editText3"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/automatic_refresh_time"
-                    android:inputType="time"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="48dp"
-                    android:autofillHints="" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/set_time" />
+
+                    <EditText
+                        android:id="@+id/refreshTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:ems="10"
+                        android:hint="@string/automatic_refresh_time"
+                        android:inputType="none|time"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="48dp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

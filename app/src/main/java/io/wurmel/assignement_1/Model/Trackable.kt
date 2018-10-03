@@ -2,6 +2,7 @@ package io.wurmel.assignement_1.Model
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import io.wurmel.assignement_1.Service.TrackingService
 import java.net.URL
 
 /**
@@ -15,6 +16,7 @@ class   Trackable {
     private var url: String = ""
     private var category: String = ""
     private var pictureUrl: String? = null
+    private lateinit var trackingInfo: TrackingService.TrackingInfo
 
     constructor(tokens: List<String>) {
         id = tokens[0].toInt()
@@ -28,6 +30,14 @@ class   Trackable {
     }
 
     constructor() {}
+
+    fun getTrackingInfo(): TrackingService.TrackingInfo {
+        return trackingInfo
+    }
+
+    fun setTrackingInfo(trackingInfo: TrackingService.TrackingInfo) {
+        this.trackingInfo = trackingInfo
+    }
 
     fun getId(): Int = this.id
 

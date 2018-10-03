@@ -5,4 +5,7 @@
     <string name="default_time">-- : --</string>
     <string name="tracking">Tracking</string>
     <string name="trackable">Trackable</string>
+    <string name="automatic_refresh_time">Automatic refresh time</string>
+    <string name="set_time">set time</string>
+    <string name="searchicon">searchIcon</string>
 </resources>
