@@ -46,7 +46,7 @@ class   AddTrackingActivity: AppCompatActivity() {
         endDateTextField = findViewById(R.id.endDate)
         beginDateTextField = findViewById(R.id.beginDate)
         if (intent.getStringExtra("trackingId") != null) {
-            editTracking = TrackableService.getTrackingById(intent.getStringExtra("trackingId"))
+            editTracking = TrackableService(this).getTrackingById(intent.getStringExtra("trackingId"))
         }
         if (editTracking != null) {
             setTitle("Editing tracking")
@@ -70,7 +70,7 @@ class   AddTrackingActivity: AppCompatActivity() {
         else {
             endDateTextField.visibility = View.GONE
             beginDateTextField.visibility = View.GONE
-            trackable = TrackableService.getTrackableFromId(this, intent.getIntExtra("trackableId", -1))
+            trackable = TrackableService(this).getTrackableFromId(intent.getIntExtra("trackableId", -1))
             configureSpinner()
             timePickerField!!.setOnClickListener {
                 displayTimePicker(false)
@@ -135,7 +135,7 @@ class   AddTrackingActivity: AppCompatActivity() {
         meetDate.hours = mHour
         newTracking.setMeetTime(meetDate)
         if (meetDate >= newTracking.getTargetStartDate() && meetDate <= newTracking.getTargetEndTime()) {
-            TrackableService.addTracking(newTracking)
+            TrackableService(this).addTracking(newTracking)
             finish()
             return
         }

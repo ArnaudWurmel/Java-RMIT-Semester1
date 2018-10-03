@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TrackableService(applicationContext).onStart()
         setContentView(R.layout.activity_main)
 
         searchBar = findViewById(R.id.searchBar)
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     private fun displayTrackables() {
         searchBar.visibility = View.VISIBLE
-        var trackables = TrackableService.getTrackables(applicationContext)
+        var trackables = TrackableService(applicationContext).getTrackables()
         if (searchString.isNotEmpty()) {
             var tmpTrackagles = ArrayList<Trackable>()
             for (trackable in trackables) {
@@ -107,13 +108,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     private fun displayTrackings() {
         searchBar.visibility = View.GONE
-        val followedsTrackings = TrackableService.getTrackings()
+        val followedsTrackings = TrackableService(this).getTrackings()
         val adapter = TrackingAdapter(followedsTrackings)
 
         recyclerView.adapter = adapter
         displayingTrackable = false
     }
 
+    override fun onStop() {
+        super.onStop()
+        TrackableService(this).onStop()
+    }
 }
 
 object TestTrackingService {

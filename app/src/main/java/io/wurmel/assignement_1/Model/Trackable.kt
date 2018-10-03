@@ -8,7 +8,7 @@ import java.net.URL
  * Created by wurmel_a on 19/7/18.
  */
 
-class   Trackable(tokens: List<String>) {
+class   Trackable {
     private var id: Int = -1
     private var name: String = ""
     private var description: String = ""
@@ -16,7 +16,7 @@ class   Trackable(tokens: List<String>) {
     private var category: String = ""
     private var pictureUrl: String? = null
 
-    init {
+    constructor(tokens: List<String>) {
         id = tokens[0].toInt()
         name = tokens[1]
         description = tokens[2]
@@ -26,6 +26,8 @@ class   Trackable(tokens: List<String>) {
             setPictureUrl(tokens[5])
         }
     }
+
+    constructor() {}
 
     fun getId(): Int = this.id
 
