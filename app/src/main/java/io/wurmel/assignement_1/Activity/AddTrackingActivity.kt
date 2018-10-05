@@ -15,6 +15,7 @@ import android.content.DialogInterface
 import android.opengl.Visibility
 import android.support.design.widget.FloatingActionButton
 import android.widget.*
+import io.wurmel.assignement_1.Service.FollowedTrackingsService
 import kotlinx.android.synthetic.main.add_tracking_activity.*
 import java.util.*
 
@@ -46,7 +47,7 @@ class   AddTrackingActivity: AppCompatActivity() {
         endDateTextField = findViewById(R.id.endDate)
         beginDateTextField = findViewById(R.id.beginDate)
         if (intent.getStringExtra("trackingId") != null) {
-            editTracking = TrackableService(this).getTrackingById(intent.getStringExtra("trackingId"))
+            editTracking = FollowedTrackingsService(this).getTrackingById(intent.getStringExtra("trackingId"))
         }
         if (editTracking != null) {
             setTitle("Editing tracking")
@@ -135,7 +136,7 @@ class   AddTrackingActivity: AppCompatActivity() {
         meetDate.hours = mHour
         newTracking.setMeetTime(meetDate)
         if (meetDate >= newTracking.getTargetStartDate() && meetDate <= newTracking.getTargetEndTime()) {
-            TrackableService(this).addTracking(newTracking)
+            FollowedTrackingsService(this).addTracking(newTracking)
             finish()
             return
         }
@@ -154,6 +155,7 @@ class   AddTrackingActivity: AppCompatActivity() {
         meetDate.hours = mHour
         editTracking!!.setMeetTime(meetDate)
         if (meetDate >= editTracking!!.getTargetStartDate() && meetDate <= editTracking!!.getTargetEndTime()) {
+            FollowedTrackingsService(this).updateTracking(editTracking!!)
             finish()
             return
         }

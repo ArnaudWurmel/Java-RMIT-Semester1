@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import io.wurmel.assignement_1.Activity.AddTrackingActivity
 import io.wurmel.assignement_1.R
+import io.wurmel.assignement_1.Service.FollowedTrackingsService
 import kotlinx.android.synthetic.main.trackable_list_layout.view.*
 import org.w3c.dom.Text
 import java.net.URI
@@ -31,8 +32,10 @@ class TrackingAdapter(val trackings: ArrayList<Tracking>) : RecyclerView.Adapter
     //this method is binding the data on the list
     override fun onBindViewHolder(holder: TrackingAdapter.ViewHolder, position: Int) {
         holder.itemView.setOnLongClickListener {
-            trackings.removeAt(position)
-            this.notifyItemRemoved(position)
+            if (FollowedTrackingsService(holder.itemView.context).removeTracking(trackings[position])) {
+                trackings.removeAt(position)
+                this.notifyItemRemoved(position)
+            }
             return@setOnLongClickListener true
         }
         holder.itemView.setOnClickListener {
@@ -58,7 +61,7 @@ class TrackingAdapter(val trackings: ArrayList<Tracking>) : RecyclerView.Adapter
             val titleTextView = itemView.findViewById<TextView>(R.id.title)
 
             monthYearTextView.text = (tracking.getMeetTime().month + 1).toString() + "/" + (tracking.getMeetTime().year + 1900).toString()
-            timeTextView.text = (tracking.getMeetTime().hours).toString() + ":" + tracking.getMeetTime().minutes.toString()
+            timeTextView.text = (tracking.getMeetTime().hours).toString() + ":" + (tracking.getMeetTime().minutes).toString()
             positionTextView.text = tracking.getTargetLocation()
             titleTextView.text = tracking.getTitle()
         }

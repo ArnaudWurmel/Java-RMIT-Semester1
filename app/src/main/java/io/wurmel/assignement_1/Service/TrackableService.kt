@@ -10,6 +10,7 @@ import io.wurmel.assignement_1.Model.Trackable
 import io.wurmel.assignement_1.Model.Tracking
 import io.wurmel.assignement_1.R
 import java.io.FileReader
+import java.lang.reflect.Array.get
 
 
 /**
@@ -19,8 +20,27 @@ import java.io.FileReader
 class   TrackableService(context: Context): SQLiteOpenHelper(context, TrackableService.DB_NAME, null, TrackableService.DB_VERSION) {
 
     private var context: Context
-    private var followedTrackings = ArrayList<Tracking>()
-    private var trackablesList = ArrayList<Trackable>()
+
+    private val trackablesList: ArrayList<Trackable>
+        get() {
+            var result = ArrayList<Trackable>()
+            val db = writableDatabase
+            val selectQuery = "SELECT * FROM $TABLE_NAME"
+            val cursor = db.rawQuery(selectQuery, null)
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    val trackable = Trackable()
+                    trackable.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ID))))
+                    trackable.setName(cursor.getString(cursor.getColumnIndex(NAME)))
+                    trackable.setDescription(cursor.getString(cursor.getColumnIndex(DESC)))
+                    trackable.setCategory(cursor.getString(cursor.getColumnIndex(CATEGORY)))
+                    trackable.setUrl(cursor.getString(cursor.getColumnIndex(URL)))
+                    trackable.setPictureUrl(cursor.getString(cursor.getColumnIndex(PICTURE_URL)))
+                    result.add(trackable)
+                } while (cursor.moveToNext())
+            }
+            return result
+        }
 
     init {
         this.context = context
@@ -39,23 +59,6 @@ class   TrackableService(context: Context): SQLiteOpenHelper(context, TrackableS
         val DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME
         db.execSQL(DROP_TABLE)
         onCreate(db)
-    }
-
-    fun addTracking(tracking: Tracking) {
-        followedTrackings.add(tracking)
-    }
-
-    fun getTrackings(): ArrayList<Tracking> {
-        return followedTrackings
-    }
-
-    fun getTrackingById(id: String): Tracking? {
-        for (tracking in followedTrackings) {
-            if (tracking.getId() == id) {
-                return tracking
-            }
-        }
-        return null
     }
 
     fun getTrackables(): ArrayList<Trackable> {
@@ -78,7 +81,6 @@ class   TrackableService(context: Context): SQLiteOpenHelper(context, TrackableS
     }
 
     fun onStart() {
-        val result = arrayListOf<Trackable>()
         val dataList = loadResourceFile()
         for (data in dataList) {
             val trackable: Trackable? = createATrackableObjectFromString(data)
@@ -90,7 +92,6 @@ class   TrackableService(context: Context): SQLiteOpenHelper(context, TrackableS
                 println("Ignored corrupted Trackable")
             }
         }
-        this.trackablesList = result
     }
 
     fun onStop() {

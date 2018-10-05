@@ -38,6 +38,7 @@ import java.util.*
 import android.view.MenuInflater
 import io.wurmel.assignement_1.R.id.refreshTime
 import io.wurmel.assignement_1.R.string.trackable
+import io.wurmel.assignement_1.Service.FollowedTrackingsService
 import io.wurmel.assignement_1.Service.GMatrixService
 import kotlin.collections.ArrayList
 
@@ -144,7 +145,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, GMatri
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             //TODO foreach trackable get time to go there, keep the one with enough time, get nearest of them
-            var trackables = TrackableService.getTrackables(applicationContext)
+            var trackables = TrackableService(applicationContext).getTrackables()
             if (searchString.isNotEmpty()) {
                 var tmpTrackagles = ArrayList<Trackable>()
                 for (trackable in trackables) {
@@ -357,7 +358,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, GMatri
 
     private fun displayTrackings() {
         searchBar.visibility = View.GONE
-        val followedsTrackings = TrackableService(this).getTrackings()
+        val followedsTrackings = FollowedTrackingsService(this).getTrackings()
         val adapter = TrackingAdapter(followedsTrackings)
 
         recyclerView.adapter = adapter

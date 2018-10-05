@@ -1,24 +1,32 @@
 package io.wurmel.assignement_1.Model
 
-import io.wurmel.assignement_1.Service.TrackingService
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 /**
  *  Created by Jean Gabriel Greco 06/08/18
  */
 
-class Tracking(trackableId: Int, title: String) {
+class Tracking {
     private var id = ""
-    private var title = title
-    private var trackableId = trackableId
+    private var title: String
+    private var trackableId: Int
     private var targetStartTime = Date()
     private var targetEndTime = Date()
     private var meetTime = Date()
     private var currentLocation = ""
     private var meetLocation = ""
 
-    init {
+    constructor(trackableId: Int, title: String) {
         id = UUID.randomUUID().toString()
+        this.trackableId = trackableId
+        this.title = title
+    }
+
+    constructor(id: String, trackableId: Int, title: String) {
+        this.id = id
+        this.trackableId = trackableId
+        this.title = title
     }
 
     fun getTitle(): String = this.title
@@ -41,6 +49,10 @@ class Tracking(trackableId: Int, title: String) {
         meetLocation = latitude.toString() + "," + longitude.toString()
     }
 
+    fun setMeetLocation(location: String) {
+        meetLocation = location
+    }
+
     fun getId(): String = this.id
 
     fun getTargetEndTime(): Date = this.targetEndTime
@@ -50,5 +62,9 @@ class Tracking(trackableId: Int, title: String) {
     fun getMeetTime(): Date = this.meetTime
 
     fun getTargetLocation(): String = this.meetLocation
+
+    fun getTrackableId(): Int = this.trackableId
+
+    fun getMeetLocation(): String = this.meetLocation
 
 }
